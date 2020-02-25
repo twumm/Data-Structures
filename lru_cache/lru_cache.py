@@ -1,3 +1,8 @@
+from doubly_linked_list import DoublyLinkedList
+import sys
+sys.path.append('../doubly_linked_list')
+
+
 class LRUCache:
     """
     Our LRUCache class keeps track of the max number of nodes it
@@ -6,8 +11,12 @@ class LRUCache:
     order, as well as a storage dict that provides fast access
     to every node stored in the cache.
     """
+
     def __init__(self, limit=10):
-        pass
+        self.limit = limit
+        self.size = 0
+        self.linked_list = DoublyLinkedList()
+        self.storage = {}
 
     """
     Retrieves the value associated with the given key. Also
@@ -16,8 +25,14 @@ class LRUCache:
     Returns the value associated with the key or None if the
     key-value pair doesn't exist in the cache.
     """
+
     def get(self, key):
-        pass
+        if key in self.storage:
+            value = self.storage.get(key)
+            self.linked_list.move_to_end(value)
+            return self.storage[key].value[1]
+        else:
+            return None
 
     """
     Adds the given key-value pair to the cache. The newly-
@@ -29,5 +44,31 @@ class LRUCache:
     want to overwrite the old value associated with the key with
     the newly-specified value.
     """
+
     def set(self, key, value):
-        pass
+        if key in self.storage:
+            node = self.storage[key]
+            node.value = (key, value)
+            self.linked_list.move_to_end(node)
+        elif self.size < self.limit:
+            self.linked_list.add_to_tail((key, value))
+            tail_value = self.linked_list.tail
+            self.storage[key] = tail_value
+            self.size += 1
+        else:
+            removed_node = self.linked_list.remove_from_head()
+            del self.storage[removed_node[0]]
+            self.linked_list.add_to_tail((key, value))
+            self.storage[key] = self.linked_list.tail
+        
+
+# cache = LRUCache(3)
+# cache.set('one', 1)
+# cache.set('two', 2)
+# cache.set('three', 3)
+# print(cache.storage)
+# print(cache.linked_list.head.value)
+# print(cache.linked_list.tail.value)
+# cache.get('one')
+# print(cache.linked_list.head.value)
+# print(cache.linked_list.tail.value)
