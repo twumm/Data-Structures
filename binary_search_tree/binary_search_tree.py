@@ -10,22 +10,22 @@ class BinarySearchTree:
         self.value = value
         self.left = None
         self.right = None
-        self.size = 0
-        self.storage = DoublyLinkedList()
 
     # Insert the given value into the tree
     def insert(self, value):
+        # print(self.value)
+        # print(value)
         # LEFT CASE
         # check if our new node's value is less than the current node's value
         if value < self.value:
             # does it have a child to the left?
             if not self.left:
                 # place our new node here
-                self.storage.add_to_head(value)
+                self.left = BinarySearchTree(value)
             # otherwise
             else:
                 # repeat process for the left
-                BinarySearchTree.insert(self, value)
+                self.left.insert(value)
 
         # RIGHT CASE
         # check if the new nodes value is greater than or equal to the current nodes value
@@ -33,39 +33,55 @@ class BinarySearchTree:
             # does it have a child to the right?
             if not self.right:
                 # place our new node here
-                self.storage.add_to_tail(value)
-        # otherwise
-        else:
-            # repeat the process for the right
-            BinarySearchTree.insert(self, value)
+                self.right = BinarySearchTree(value)
+            # otherwise
+            else:
+                # repeat the process for the right
+                self.right.insert(value)
 
     # Return True if the tree contains the value
     # False if it does not
     def contains(self, target):
         # BASE CASE
-
+        if self is None or self.value is target:
+            return False
         # LEFT CASE
-
+        if self.left < target:
+            return self.left.contains(target)
+        else:
+            return True
         # RIGHT CASE
-        pass
+        if self.right >= target:
+            return self.right.contains(target)
+        else:
+            return True
+
 
     # Return the maximum value found in the tree
     def get_max(self):
         # base case
         # if empty tree
-            # return none
+        if self is None:
+            return None
 
         # recursive case
         # if there is no right value 
+        if not self.right:
             # return the root node value
+            return self.value
         # otherwise
+        else:
             # return get max of the right hand child
-        pass
+            return self.right.get_max()
 
     # Call the function `cb` on the value of each node
     # You may use a recursive or iterative approach
     def for_each(self, cb):
-        pass
+        if self.value:
+            return self.for_each(self.value)
+        if self.left:
+            return self.for_each(self.left)
+        return self.for_each(self.right)
 
     # DAY 2 Project -----------------------
 
