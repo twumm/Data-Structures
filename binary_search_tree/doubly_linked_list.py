@@ -159,3 +159,9 @@ class DoublyLinkedList:
                 max_value = current_node.value
             current_node = current_node.next
         return max_value
+
+    # def __iter__(self):
+    #     cur = self.head
+    #     while cur is not None:
+    #         yield cur.value
+    #         cur = cur.next
