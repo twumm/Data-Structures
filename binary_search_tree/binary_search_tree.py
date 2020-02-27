@@ -43,6 +43,27 @@ class BinarySearchTree:
     # False if it does not
     def contains(self, target):
         # BASE CASE
+        # check if the value matches the target
+        # if self.value == target:
+        #     # return True
+        #     return True
+        # # LEFT CASE
+        # # if target less than value
+        # if target < self.value:
+        #     # check if the left child exists
+        #     if not self.left:
+        #         # call the contains method of the left
+        #         self.left.contains(target)
+        # # RIGHT CASE
+        # if target >= self.value:
+        #     # check if right child exists if not
+        #     if not self.right:
+        #         return False
+        #     # otherwise
+        #     else:
+        #         return self.right.contains(target)
+        ##################################### 
+        # BASE CASE
         if self is None or self.value is target:
             return False
         # LEFT CASE
@@ -63,7 +84,6 @@ class BinarySearchTree:
         # if empty tree
         if self is None:
             return None
-
         # recursive case
         # if there is no right value 
         if not self.right:
@@ -77,11 +97,17 @@ class BinarySearchTree:
     # Call the function `cb` on the value of each node
     # You may use a recursive or iterative approach
     def for_each(self, cb):
-        if self.value:
-            return self.for_each(self.value)
+        # BASE CASE
+        cb(self.value)
+        # run the callback passing in the selfs value
+        # if left exists
         if self.left:
-            return self.for_each(self.left)
-        return self.for_each(self.right)
+            # run the for each on left
+            self.left.for_each(cb)
+        # if right exists
+        if self.right:
+            # run the for each on the right
+            self.right.for_each(cb)
 
     # DAY 2 Project -----------------------
 
